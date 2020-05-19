@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Ambienty</title>
+</head>
+<body>
+<div class="container" style="padding-top: 3vh">
+<div class="jumbotron">
+
+<h2 class="text-center">Lista ambientów</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Link</th>
+        <th scope="col">Opis</th>
+        <th scope="col">Kategorie</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    {% for i in form %}
+        <td scope="row">{{ i.0 }}</td>
+        <td scope="row"><a href="{{ i.1 }}">{{ i.2 }}</a></td>
+        <td scope="row">{{ i.3 }}</td>
+        <td scope="row">{{ i.4 }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+</div>
+</body>
+</html>
