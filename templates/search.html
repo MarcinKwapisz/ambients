@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Wyniki</title>
+</head>
+<body>
+<div class="container" style="padding-top: 3vh">
+<div class="jumbotron">
+<h2 class="text-center">Wyniki wyszukiwania</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Link</th>
+        <th scope="col">Opis</th>
+        <th scope="col">Kategorie</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    {% for i in queries %}
+        <td scope="row">{{ i.id }}</td>
+        <td scope="row"><a href="{{ i.link }}">{{ i.linkName }}</a></td>
+        <td scope="row">{{ i.opis }}</td>
+        <td scope="row">{{ i.kategorie }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+</div>
+</body>
+</html>

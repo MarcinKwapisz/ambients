@@ -11,9 +11,16 @@
 <form class="form-inline d-flex md-form form-sm mt-0" method="post" action="search">
     {% csrf_token %}
   <i class="fas fa-search" aria-hidden="true"></i>
-  <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search"
+  <input class="form-control form-control-sm ml-3 w-25" type="text" placeholder="Search"
     aria-label="Search" name="search">
+    <div class="form-group">
+    <select class="form-control form-control-sm" id="exampleFormControlSelect1" name="type">
+      <option>Nazwa</option>
+      <option>Kategorie</option>
+    </select>
+  </div>
 </form>
+    <button type="button" class="btn btn-dark btn-sm"><a style="color: white" href="add">Dodaj</a></button>
 <h2 class="text-center">Lista ambientów</h2>
 <table class="table">
     <thead>

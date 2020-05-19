@@ -25,5 +25,9 @@ def add(request):
 
 def search(request):
     name = request.POST['search']
-    queries = models.Ambients.objects.filter(kategorie__contains=name)
-    print(queries)
+    type = request.POST['type']
+    if type == 'Nazwa':
+        queries = models.Ambients.objects.all().filter(linkName__contains=name)
+    else:
+        queries = models.Ambients.objects.all().filter(kategorie__contains=name)
+    return render(request,'search.html',{'queries': queries})
