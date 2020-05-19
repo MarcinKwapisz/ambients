@@ -1,0 +1,21 @@
+body
+{
+    background: url("bck.jpg") no-repeat center center fixed;
+    background-size: cover;
+
+}
+
+.jumbotron
+{
+    opacity: 0.95;
+}
+
+/* Popup box BEGIN */
+.video{
+    z-index: 1000;
+    position: fixed;
+    top: 25vh;
+    left: 25vw;
+
+}
+

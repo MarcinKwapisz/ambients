@@ -19,9 +19,9 @@ def add(request):
         if len(models.Ambients.objects.filter(link__contains=li['link'])) == 0:
             soup = BeautifulSoup(urllib.request.urlopen(li['link']))
             models.Ambients.objects.create(link=li['link'],linkName=soup.title.string,opis=li['opis'],kategorie=li['kategorie'])
-            return HttpResponse('<meta http-equiv="Refresh" content="2"; url="/" />Dodano')
+            return HttpResponse('<meta http-equiv="Refresh" content="1"; url="/" />Dodano')
         else:
-            return HttpResponse('<meta http-equiv="Refresh" content="2"; url="/" />Jest już taki ambient')
+            return HttpResponse('<meta http-equiv="Refresh" content="1"; url="/" />Jest już taki ambient')
 
 def search(request):
     name = request.POST['search']
@@ -31,3 +31,16 @@ def search(request):
     else:
         queries = models.Ambients.objects.all().filter(kategorie__contains=name)
     return render(request,'search.html',{'queries': queries})
+
+def delete(request):
+    if request.method == "GET":
+        form = models.Ambients.objects.values_list()
+        return render(request, 'delete.html', {'form': form})
+    else:
+        lista = request.POST
+        for i in lista:
+            if i == "csrfmiddlewaretoken":
+                pass
+            else:
+                models.Ambients.objects.get(id=i).delete()
+        return HttpResponse('<meta http-equiv="Refresh" content="1"; url="delete" />Usunięto')
