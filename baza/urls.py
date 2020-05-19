@@ -4,5 +4,5 @@ from baza import views
 urlpatterns = [
     path('', views.index),
     path('add',views.add),
-    path('test',views.test),
+    path('search',views.search),
 ]

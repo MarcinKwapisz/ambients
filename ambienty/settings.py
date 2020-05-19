@@ -25,7 +25,7 @@ SECRET_KEY = 'yyg_=g9j_7t-u!^^_(=o7+*c_uhak!np4o&93$x@8$kcalv^qv'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['217.61.0.179:8000','localhost','ambient.czykwapiszapojebalo.xyz/']
 
 
 # Application definition

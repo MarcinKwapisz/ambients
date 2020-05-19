@@ -22,7 +22,8 @@ def add(request):
             return HttpResponse('<meta http-equiv="Refresh" content="2"; url="/" />Dodano')
         else:
             return HttpResponse('<meta http-equiv="Refresh" content="2"; url="/" />Jest już taki ambient')
-def test(request):
-    models.Ambients.objects.create(link="https://www.youtube.com/watch?v=I-cC3wSKAGk", linkName="1 Hour of peaceful Music & Nature Ambience | The Witcher 3",
-    opis="123", kategorie="wojna, test, loop")
-    return HttpResponse(123)
+
+def search(request):
+    name = request.POST['search']
+    queries = models.Ambients.objects.filter(kategorie__contains=name)
+    print(queries)
