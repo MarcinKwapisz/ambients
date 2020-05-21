@@ -11,16 +11,19 @@ def index(request):
     return render(request, 'index.html', {'form':form})
 
 def add(request):
-    if request.method == "GET":
-        return render(request, 'add.html')
-    else:
-        li = request.POST
-        if len(models.Ambients.objects.filter(link__contains=li['link'])) == 0:
-            soup = BeautifulSoup(urllib.request.urlopen(li['link']))
-            models.Ambients.objects.create(link=li['link'],linkName=soup.title.string,opis=li['opis'],kategorie=li['kategorie'])
-            return HttpResponse('<meta http-equiv="Refresh" content="1"; url="/" />Dodano')
+    if request.user.is_authenticated:
+        if request.method == "GET":
+            return render(request, 'add.html')
         else:
-            return HttpResponse('<meta http-equiv="Refresh" content="1"; url="/" />Jest już taki ambient')
+            li = request.POST
+            if len(models.Ambients.objects.filter(link__contains=li['link'])) == 0:
+                soup = BeautifulSoup(urllib.request.urlopen(li['link']))
+                models.Ambients.objects.create(link=li['link'],linkName=soup.title.string,opis=li['opis'],kategorie=li['kategorie'])
+                return HttpResponse('<meta http-equiv="Refresh" content="1"; url="/" />Dodano')
+            else:
+                return HttpResponse('<meta http-equiv="Refresh" content="1"; url="/" />Jest już taki ambient')
+    else:
+        return redirect('/admin')
 
 def search(request):
     name = request.POST['search']
@@ -32,34 +35,40 @@ def search(request):
     return render(request,'search.html',{'queries': queries})
 
 def delete(request):
-    if request.method == "GET":
-        form = models.Ambients.objects.values_list()
-        return render(request, 'delete.html', {'form': form})
+    if request.user.is_authenticated:
+        if request.method == "GET":
+            form = models.Ambients.objects.values_list()
+            return render(request, 'delete.html', {'form': form})
+        else:
+            lista = request.POST
+            for i in lista:
+                if i == "csrfmiddlewaretoken":
+                    pass
+                else:
+                    models.Ambients.objects.get(id=i).delete()
+            return HttpResponse('<meta http-equiv="Refresh" content="1"; url="delete" />Usunięto')
     else:
-        lista = request.POST
-        for i in lista:
-            if i == "csrfmiddlewaretoken":
-                pass
-            else:
-                models.Ambients.objects.get(id=i).delete()
-        return HttpResponse('<meta http-equiv="Refresh" content="1"; url="delete" />Usunięto')
+        return redirect('/admin')
 
 def edit(request):
-    if request.method == "GET":
-        id = request.GET.get('id', '')
-        if id == '':
-            return redirect('/')
+    if request.user.is_authenticated:
+        if request.method == "GET":
+            id = request.GET.get('id', '')
+            if id == '':
+                return redirect('/')
+            else:
+                obj = models.Ambients.objects.get(id=id)
+                return render(request, 'edit.html', {'obj': obj})
         else:
-            obj = models.Ambients.objects.get(id=id)
-            return render(request, 'edit.html', {'obj': obj})
+            lista = request.POST
+            obj = models.Ambients.objects.get(id=lista['id'])
+            soup = BeautifulSoup(urllib.request.urlopen(lista['link']))
+            name=soup.title.string
+            obj.opis=lista['opis']
+            obj.kategorie=lista['kategorie']
+            obj.linkName=name
+            obj.link=lista['link']
+            obj.save()
+            return HttpResponse('<meta http-equiv="Refresh" content="1"; url="" />Edytowano')
     else:
-        lista = request.POST
-        obj = models.Ambients.objects.get(id=lista['id'])
-        soup = BeautifulSoup(urllib.request.urlopen(lista['link']))
-        name=soup.title.string
-        obj.opis=lista['opis']
-        obj.kategorie=lista['kategorie']
-        obj.linkName=name
-        obj.link=lista['link']
-        obj.save()
-        return HttpResponse('<meta http-equiv="Refresh" content="1"; url="" />Edytowano')
+        return redirect('/admin')
