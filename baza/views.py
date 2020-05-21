@@ -62,4 +62,4 @@ def edit(request):
         obj.linkName=name
         obj.link=lista['link']
         obj.save()
-        return HttpResponse('<meta http-equiv="Refresh" content="1"; url="ambienty.czykwapiszapojebalo.xyz" />Edytowano')
+        return HttpResponse('<meta http-equiv="Refresh" content="1"; url="" />Edytowano')
