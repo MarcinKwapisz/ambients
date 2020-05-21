@@ -38,7 +38,7 @@
 </form>
   </div>
 </nav>
-<div class="container" style="padding-top: 3vh">
+<div class="container">
 <div class="jumbotron">
 <h2 class="text-center">Wyniki wyszukiwania</h2>
 <table class="table">
@@ -48,15 +48,18 @@
         <th scope="col">Link</th>
         <th scope="col">Opis</th>
         <th scope="col">Kategorie</th>
+        <th scope="col"></th>
     </tr>
     </thead>
     <tbody>
     <tr>
     {% for i in queries %}
         <td scope="row">{{ i.id }}</td>
-        <td scope="row"><a href="{{ i.link }}">{{ i.linkName }}</a><a onclick='view("{{ i.link }}")'><img width="30" height="30" src="{% static 'play.png' %}"></a></td>
+        <td scope="row"><a href="{{ i.link }}">{{ i.linkName }}</a></td>
         <td scope="row">{{ i.opis }}</td>
         <td scope="row">{{ i.kategorie }}</td>
+        <td scope="row"><a onclick='view("{{ i.link }}")'><img width="30" height="30" src="{% static 'play.png' %}"></a>
+        <a href="edit?id={{ i.id }}"><img width="30" height="30" src="{% static 'edit.png' %}"></a></td>
     </tr>
     {% endfor %}
     </tbody>

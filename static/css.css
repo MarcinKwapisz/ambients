@@ -8,8 +8,13 @@ body
 .jumbotron
 {
     opacity: 0.95;
+
 }
 
+.container
+{
+    padding-top: 5vh !important;
+}
 /* Popup box BEGIN */
 .video{
     z-index: 1000;

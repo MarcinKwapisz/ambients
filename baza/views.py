@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest
 from . import models
 import urllib.request
@@ -44,3 +43,23 @@ def delete(request):
             else:
                 models.Ambients.objects.get(id=i).delete()
         return HttpResponse('<meta http-equiv="Refresh" content="1"; url="delete" />Usunięto')
+
+def edit(request):
+    if request.method == "GET":
+        id = request.GET.get('id', '')
+        if id == '':
+            return redirect('/')
+        else:
+            obj = models.Ambients.objects.get(id=id)
+            return render(request, 'edit.html', {'obj': obj})
+    else:
+        lista = request.POST
+        obj = models.Ambients.objects.get(id=lista['id'])
+        soup = BeautifulSoup(urllib.request.urlopen(lista['link']))
+        name=soup.title.string
+        obj.opis=lista['opis']
+        obj.kategorie=lista['kategorie']
+        obj.linkName=name
+        obj.link=lista['link']
+        obj.save()
+        return HttpResponse('<meta http-equiv="Refresh" content="1"; url="ambienty.czykwapiszapojebalo.xyz" />Edytowano')
