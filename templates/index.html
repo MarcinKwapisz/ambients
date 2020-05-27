@@ -46,7 +46,6 @@
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">#</th>
         <th scope="col">Link</th>
         <th scope="col">Opis</th>
         <th scope="col">Kategorie</th>
@@ -56,12 +55,11 @@
     <tbody>
     <tr>
     {% for i in form %}
-        <td scope="row">{{ i.0 }}</td>
         <td scope="row"><a href="{{ i.1 }}">{{ i.2 }}</a></td>
         <td scope="row">{{ i.3 }}</td>
         <td scope="row">{{ i.4 }}</td>
         <td scope="row"><a onclick='view("{{ i.1 }}")'><img width="30" height="30" src="{% static 'play.png' %}"></a>
-            <a href="edit?id={{ i.0 }}"><img width="20" height="20" src="{% static 'edit.png' %}"></a> </td>
+            {% if user.is_authenticated %}<a href="edit?id={{ i.0 }}"><img width="20" height="20" src="{% static 'edit.png' %}"></a>{% endif %}</td>
     </tr>
 
     {% endfor %}

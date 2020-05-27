@@ -6,9 +6,20 @@ from bs4 import BeautifulSoup
 
 # Create your views here.
 
+def getName(link, ret=0):
+    soup = BeautifulSoup(urllib.request.urlopen(link))
+    name = soup.title.string
+    if len(name)<10 and ret==0:
+        getName(link,1)
+    if len(name)<10 and ret==1:
+        return name
+    else:
+        return name[0:-10]
+
+
 def index(request):
     form = models.Ambients.objects.values_list()
-    return render(request, 'index.html', {'form':form})
+    return render(request, 'index.html', {'form':form}, )
 
 def add(request):
     if request.user.is_authenticated:
@@ -17,8 +28,7 @@ def add(request):
         else:
             li = request.POST
             if len(models.Ambients.objects.filter(link__contains=li['link'])) == 0:
-                soup = BeautifulSoup(urllib.request.urlopen(li['link']))
-                models.Ambients.objects.create(link=li['link'],linkName=soup.title.string,opis=li['opis'],kategorie=li['kategorie'])
+                models.Ambients.objects.create(link=li['link'],linkName=getName(li['link']),opis=li['opis'],kategorie=li['kategorie'])
                 return HttpResponse('<meta http-equiv="Refresh" content="1"; url="/" />Dodano')
             else:
                 return HttpResponse('<meta http-equiv="Refresh" content="1"; url="/" />Jest już taki ambient')
@@ -62,11 +72,9 @@ def edit(request):
         else:
             lista = request.POST
             obj = models.Ambients.objects.get(id=lista['id'])
-            soup = BeautifulSoup(urllib.request.urlopen(lista['link']))
-            name=soup.title.string
             obj.opis=lista['opis']
             obj.kategorie=lista['kategorie']
-            obj.linkName=name
+            obj.linkName=getName(lista['link'])
             obj.link=lista['link']
             obj.save()
             return HttpResponse('<meta http-equiv="Refresh" content="1"; url="" />Edytowano')
