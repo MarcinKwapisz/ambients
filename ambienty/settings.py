@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'yyg_=g9j_7t-u!^^_(=o7+*c_uhak!np4o&93$x@8$kcalv^qv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost','ambient.czykwapiszapojebalo.xyz','ambienty.pl']
 
