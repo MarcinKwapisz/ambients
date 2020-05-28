@@ -1,0 +1,38 @@
+{% include 'head.html' with title="Rejestracja"%}
+{% load static %}
+<body class="text-center">
+<div class="container">
+    <div class="jumbotron" style="padding-bottom: 1%">
+        <form class="form-signin " method="post" oninput='password2.setCustomValidity(password2.value != password.value ? "Hasła się nie zgadzają" : "")'>
+                {% csrf_token %}
+              <i class="fas fa-sign-in-alt fa-3x"></i>
+              <h1 class="h3 mb-3 font-weight-normal">Zarejestruj się</h1>
+              <div class="form-group">
+                <label for="inputMail" class="sr-only">emain</label>
+                <input type="email" name="email" id="inputMail" class="form-control" placeholder="email" required autofocus>
+              </div>
+            <div class="form-group">
+              <label for="inputName" class="sr-only">Nazwa</label>
+              <input type="text" name="name" id="inputName" class="form-control" placeholder="Nazwa" required autofocus>
+            </div>
+            <div class="form-group">
+              <label for="inputPassword" class="sr-only">Hasło</label>
+              <input type="password" name='password' id="inputPassword" class="form-control" placeholder="Hasło" required>
+            </div>
+            <div class="form-group">
+              <label for="inputPassword2" class="sr-only">Hasło</label>
+              <input type="password" name='password2' id="inputPassword2" class="form-control" placeholder="Powtórz hasło" required>
+              <input type="checkbox" onclick='show("inputPassword");show("inputPassword2")'>Pokaż hasło
+            </div>
+              <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" name="regulamin" value="1" required> Akceptuję <a href="regulamin">regulamin</a>
+                </label>
+              </div>
+              <button class="btn btn-lg btn-primary btn-block" type="submit">Zarejestruj się</button>
+        </form>
+        <br><h6 ><a href="/">Wróć na stronę główną</a></h6>
+    </div>
+</div>
+</body>
+</html>

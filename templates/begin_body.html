@@ -1,0 +1,66 @@
+{% load static %}
+<body>
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="/"><img width="30" height="30"src="{% static 'favicon.png' %}"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="add">Dodaj</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="delete">Usuń</a>
+      </li>
+    {% if request.user.is_superuser %}
+            <li class="nav-item">
+        <a class="nav-link" href="admini">Admin</a>
+      </li>
+    {% endif %}
+        <li class="nav-item">
+        <a class="nav-link dropright" href="#" onclick="searchbox()" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-search"></i> Szukaj
+        </a>
+      </li>
+    </ul>
+      <div class="nav-item navbar-nav">{% if user.is_authenticated %}
+          <div class="dropleft ">
+            <a href="#" id="profilelink" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-user-circle"></i>
+          {{ request.user.username }} </a>
+          <div class="dropdown-menu bg-secondary text-light" aria-labelledby="profilelink" style="margin-right: 5%">
+              <a class="dropdown-item text-light" href="user">Twój profil</a>
+              <a class="dropdown-item text-light" href="logout">Wyloguj</a>
+          </div>
+      </div>
+      {% else %}
+        <a href="login" class="nav-link"><i class="fas fa-sign-in-alt"></i> Logowanie</a>
+        {% endif %}
+      </div>
+  </div>
+</nav>
+<div id="search" class="searchbox">
+  <div class="searchbox-content">
+    <span class="close" onclick="searchboxclose()"><i class="far fa-times-circle"></i></span>
+    <div class="container text-center">
+        <h3>Wyszukaj ambient</h3>
+        <form class="px-4 py-3" method="post" action="search">
+             {% csrf_token %}
+            <div class="form-group">
+              <input class="form-control form-control-sm " type="text" placeholder="Search"
+                                              aria-label="Wpisz frazę" name="search"></a>
+            </div>
+                <div class="form-group">
+                <select class="form-control form-control-sm custom-select" id="exampleFormControlSelect1" name="type">
+                  <option>Nazwa</option>
+                  <option>Opis</option>
+                  <option>Kategorie</option>
+                </select>
+              </div>
+                <button class="btn btn-success" type="submit">Szukaj</button>
+        </form>
+    </div>
+  </div>
+
+</div>

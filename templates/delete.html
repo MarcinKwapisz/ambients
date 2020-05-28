@@ -1,39 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+{% include 'head.html' with title="Usuń"%}
+{% include 'begin_body.html' %}
 {% load static %}
-    <link rel="stylesheet" href="static/css.css">
-    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.png' %}"/>
-    <meta charset="UTF-8">
-    <title>Ambienty</title>
-</head>
-<body>
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="/"><img width="30" height="30"src="{% static 'favicon.png' %}"></a>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="add">Dodaj</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="delete">Usuń</a>
-      </li>
-    </ul>
-    <form class="form-inline d-flex md-form form-sm mt-0" method="post" action="search">
-    {% csrf_token %}
-  <i class="fas fa-search" aria-hidden="true"></i>
-  <input class="form-control form-control-sm ml-3 w-35" type="text" placeholder="Search"
-    aria-label="Search" name="search">
-    <div class="form-group">
-    <select class="form-control form-control-sm" id="exampleFormControlSelect1" name="type">
-      <option>Nazwa</option>
-      <option>Kategorie</option>
-    </select>
-  </div>
-</form>
-  </div>
-</nav>
 <div class="container" style="padding-top: 3vh">
 <div class="jumbotron">
 <form action="delete" method="post">
@@ -42,20 +9,19 @@
         <thead>
         <tr>
             <th scope="col"></th>
-            <th scope="col">#</th>
             <th scope="col">Link</th>
             <th scope="col">Opis</th>
             <th scope="col">Kategorie</th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
-        <tr>
         {% for i in form %}
-            <td scope="row"> <input type="checkbox" name="{{ i.0 }}"</td>
-            <td scope="row">{{ i.0 }}</td>
-            <td scope="row"><a href="{{ i.1 }}">{{ i.2 }}</a></td>
-            <td scope="row">{{ i.3 }}</td>
-            <td scope="row">{{ i.4 }}</td>
+        <tr>
+            <td scope="row"> <input type="checkbox" name="{{ i.id }}"</td>
+            <td scope="row"><a href="{{ i.link }}">{{ i.linkName }}</a></td>
+        <td scope="row">{{ i.opis }}</td>
+        <td scope="row">{{ i.kategorie }}</td>
         </tr>
         {% endfor %}
         </tbody>

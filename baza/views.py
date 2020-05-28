@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import models as mod, authenticate,login as authlog,logout as authlogout
 from django.http import HttpResponse, HttpRequest
 from . import models
 import urllib.request
@@ -16,6 +17,9 @@ def getName(link, ret=0):
     else:
         return name[0:-10]
 
+def getlink(link):
+    soup = BeautifulSoup(urllib.request.urlopen(link))
+    name = soup.getSiteName
 
 def index(request):
     form = models.Ambients.objects.values_list()
@@ -28,26 +32,29 @@ def add(request):
         else:
             li = request.POST
             if len(models.Ambients.objects.filter(link__contains=li['link'])) == 0:
-                models.Ambients.objects.create(link=li['link'],linkName=getName(li['link']),opis=li['opis'],kategorie=li['kategorie'])
-                return HttpResponse('<meta http-equiv="Refresh" content="1"; url="/" />Dodano')
+                models.Ambients.objects.create(link=li['link'],linkName=getName(li['link']),opis=li['opis'],kategorie=li['kategorie'],dodal=request.user.id)
+                return redirect('/')
             else:
                 return HttpResponse('<meta http-equiv="Refresh" content="1"; url="/" />Jest już taki ambient')
     else:
-        return redirect('/admin')
+        return redirect('/login')
 
 def search(request):
     name = request.POST['search']
     type = request.POST['type']
     if type == 'Nazwa':
-        queries = models.Ambients.objects.all().filter(linkName__contains=name)
+        queries = models.Ambients.objects.all().filter(linkName__icontains=name)
+    elif type == "Opis":
+        queries = models.Ambients.objects.all().filter(opis__icontains=name)
     else:
-        queries = models.Ambients.objects.all().filter(kategorie__contains=name)
+        queries = models.Ambients.objects.all().filter(kategorie__icontains=name)
     return render(request,'search.html',{'queries': queries})
 
 def delete(request):
     if request.user.is_authenticated:
         if request.method == "GET":
-            form = models.Ambients.objects.values_list()
+            user = request.user.id
+            form = models.Ambients.objects.all().filter(dodal=user)
             return render(request, 'delete.html', {'form': form})
         else:
             lista = request.POST
@@ -55,10 +62,14 @@ def delete(request):
                 if i == "csrfmiddlewaretoken":
                     pass
                 else:
-                    models.Ambients.objects.get(id=i).delete()
-            return HttpResponse('<meta http-equiv="Refresh" content="1"; url="delete" />Usunięto')
+                    mod = models.Ambients.objects.get(id=i)
+                    if mod.dodal == request.user.id or request.user.is_superuser:
+                        mod.delete()
+                    else:
+                        pass
+            return redirect('/')
     else:
-        return redirect('/admin')
+        return redirect('/login')
 
 def edit(request):
     if request.user.is_authenticated:
@@ -68,15 +79,75 @@ def edit(request):
                 return redirect('/')
             else:
                 obj = models.Ambients.objects.get(id=id)
-                return render(request, 'edit.html', {'obj': obj})
+                if obj.dodal == request.user.id or request.user.is_superuser:
+                    return render(request, 'edit.html', {'obj': obj})
+                else:
+                    return redirect('/')
         else:
             lista = request.POST
             obj = models.Ambients.objects.get(id=lista['id'])
             obj.opis=lista['opis']
             obj.kategorie=lista['kategorie']
-            obj.linkName=getName(lista['link'])
+            l = getName(lista['link'])
+            obj.linkName=l
             obj.link=lista['link']
             obj.save()
-            return HttpResponse('<meta http-equiv="Refresh" content="1"; url="" />Edytowano')
+            return redirect('/user')
     else:
-        return redirect('/admin')
+        return redirect('/login')
+
+def user(request):
+    if request.user.is_authenticated:
+        user = request.user.id
+        form = models.Ambients.objects.all().filter(dodal=user)
+        return render(request, 'user.html', {'form': form}, )
+    else:
+        return redirect('login')
+
+def admini(request):
+    if request.user.is_superuser:
+        return render(request, 'admin.html')
+    else:
+        return redirect('/')
+
+def login(request):
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            return redirect('/user')
+        else:
+            return render(request, 'login.html')
+    else:
+        lista = request.POST
+        if lista.getlist('remember'):
+            log = authenticate(username=lista['name'], password=lista['password'])
+        else:
+            log = authenticate(username=lista['name'], password=lista['password'])
+            request.session.set_expiry(0)
+        if log is not None:
+            authlog(request, log)
+            return redirect('/')
+        else:
+            return redirect('/login')
+
+def register(request):
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            return redirect("/user")
+        else:
+            return render(request, 'register.html')
+    else:
+        lista = request.POST
+        if not mod.User.objects.filter(username=lista['name']) or not mod.User.objects.filter(email=lista['email']):
+            user = mod.User.objects.create_user(lista['name'], lista['email'], lista['password'])
+            user.save()
+            return redirect('/login')
+        else:
+
+            return redirect('/register')
+
+def logout(request):
+    if request.user.is_authenticated:
+        authlogout(request)
+        return redirect('/')
+    else:
+        return redirect('/')

@@ -25,7 +25,7 @@ SECRET_KEY = 'yyg_=g9j_7t-u!^^_(=o7+*c_uhak!np4o&93$x@8$kcalv^qv'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','ambient.czykwapiszapojebalo.xyz','127.0.0.1']
+ALLOWED_HOSTS = ['localhost','ambient.czykwapiszapojebalo.xyz']
 
 
 # Application definition
@@ -77,8 +77,12 @@ WSGI_APPLICATION = 'ambienty.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'db_b247',
+        'USER': 'b247',
+        'PASSWORD': 'MmU5_0453',
+        'HOST': 'front.mikr.us',
+        'PORT': '3306',
     }
 }
 
@@ -124,3 +128,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     ]
+
+LOGIN_REDIRECT_URL = '/'

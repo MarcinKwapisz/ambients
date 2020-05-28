@@ -1,43 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    {% load static %}
-    <link rel="stylesheet" href="static/css.css">
-    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.png' %}"/>
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-     <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-     <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-        <script src="static/js.js"></script>
-    <meta charset="UTF-8">
-    <title>Wyniki</title>
-</head>
-<body>
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="/"><img width="30" height="30"src="{% static 'favicon.png' %}"></a>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="add">Dodaj</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="delete">Usuń</a>
-      </li>
-    </ul>
-    <form class="form-inline d-flex md-form form-sm mt-0" method="post" action="search">
-    {% csrf_token %}
-  <i class="fas fa-search" aria-hidden="true"></i>
-  <input class="form-control form-control-sm ml-3 w-35" type="text" placeholder="Search"
-    aria-label="Search" name="search">
-    <div class="form-group">
-    <select class="form-control form-control-sm" id="exampleFormControlSelect1" name="type">
-      <option>Nazwa</option>
-      <option>Kategorie</option>
-    </select>
-  </div>
-</form>
-  </div>
-</nav>
+{% include 'head.html' with title="Wyniki"%}
+{% include 'begin_body.html'%}
+{% load static %}
 <div class="container">
 <div class="jumbotron">
 <h2 class="text-center">Wyniki wyszukiwania</h2>
@@ -56,8 +19,7 @@
         <td scope="row"><a href="{{ i.link }}">{{ i.linkName }}</a></td>
         <td scope="row">{{ i.opis }}</td>
         <td scope="row">{{ i.kategorie }}</td>
-        <td scope="row"><a onclick='view("{{ i.link }}")'><img width="30" height="30" src="{% static 'play.png' %}"></a>
-       {% if user.is_authenticated %} <a href="edit?id={{ i.id }}"><img width="20" height="20" src="{% static 'edit.png' %}"></a>{% endif %}</td>
+        <td scope="row"><a onclick='view("{{ i.link }}")'><img width="30" height="30" src="{% static 'play.png' %}"></a></td>
     </tr>
     {% endfor %}
     </tbody>
