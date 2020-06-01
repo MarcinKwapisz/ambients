@@ -4,12 +4,14 @@ from django.http import HttpResponse, HttpRequest
 from . import models
 import urllib.request
 from bs4 import BeautifulSoup
+import re
 
 # Create your views here.
 
 def getName(link, ret=0):
     soup = BeautifulSoup(urllib.request.urlopen(link))
     name = soup.title.string
+    name = name.encode('ascii', 'ignore').decode('ascii')
     if len(name)<10 and ret==0:
         getName(link,1)
     if len(name)<10 and ret==1:
