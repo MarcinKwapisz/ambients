@@ -47,6 +47,10 @@ div.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; 
 document.body.appendChild(div);
 }
 
+setTimeout(function() {
+    var container = $(".messages");
+    container.remove()
+}, 6000);
 
 $(document).mouseup(function(e)
 {

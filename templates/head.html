@@ -29,3 +29,12 @@
     <meta charset="UTF-8">
     <title>{{ title }}</title>
 </head>
+<body>
+{% if messages %}
+    {% for message in messages %}
+      <div class="text-white messages  messages-{{ message.tags }}" role="alert">
+          <div>{{ message }}</div>
+      </div>
+    {% endfor %}
+
+{% endif %}
