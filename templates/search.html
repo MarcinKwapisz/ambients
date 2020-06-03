@@ -24,6 +24,25 @@
     {% endfor %}
     </tbody>
 </table>
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item {% if queries.has_previous %}{% else %}disabled{% endif %}">
+      <a class="page-link" href="?page=1" tabindex="-1"><<</a>
+    </li>
+    <li class="page-item {% if queries.has_previous %}{% else %}disabled{% endif %}">
+      <a class="page-link" href="?page={% if queries.has_previous %}{{ queries.previous_page_number }}{% endif %}" tabindex="-1">Poprzednia</a>
+    </li>
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1">Strona {{ queries.number }}</a>
+    </li>
+    <li class="page-item {% if queries.has_next %}{% else %}disabled{% endif %}">
+      <a class="page-link" href="?page={% if queries.has_next %}{{ queries.next_page_number }}{% endif %}">Następna</a>
+    </li>
+        <li class="page-item {% if queries.has_next %}{% else %}disabled{% endif %}">
+      <a class="page-link" href="?page={{ queries.paginator.num_pages }}" tabindex="-1">>></a>
+    </li>
+  </ul>
+</nav>
 </div>
 </div>
 </body>
