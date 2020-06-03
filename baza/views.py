@@ -6,6 +6,8 @@ from . import models
 import urllib.request
 from bs4 import BeautifulSoup
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+
 
 # Create your views here.
 
@@ -35,7 +37,10 @@ def getlink(link):
 
 def index(request):
     form = models.Ambients.objects.values_list().order_by('-glosy')
-    return render(request, 'index.html', {'form':form})
+    paginator = Paginator(form,30)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    return render(request, 'index.html', {'page':page})
 
 @login_required
 def add(request):
@@ -56,12 +61,15 @@ def search(request):
     name = request.POST['search']
     type = request.POST['type']
     if type == 'Nazwa':
-        queries = models.Ambients.objects.all().filter(linkName__icontains=name)
+        queries = models.Ambients.objects.all().filter(linkName__icontains=name).order_by('id')
     elif type == "Opis":
-        queries = models.Ambients.objects.all().filter(opis__icontains=name)
+        queries = models.Ambients.objects.all().filter(opis__icontains=name).order_by('id')
     else:
-        queries = models.Ambients.objects.all().filter(kategorie__icontains=name)
-    return render(request,'search.html',{'queries': queries})
+        queries = models.Ambients.objects.all().filter(kategorie__icontains=name).order_by('id')
+    paginator = Paginator(queries, 30)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    return render(request,'search.html',{'queries': page})
 
 @login_required
 def delete(request):

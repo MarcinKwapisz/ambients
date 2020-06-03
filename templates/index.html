@@ -16,7 +16,7 @@
     </thead>
     <tbody>
 
-    {% for i in form %}
+    {% for i in page %}
     <tr>
         <td scope="row"><a href="{{ i.1 }}">{{ i.2 }}</a></td>
         <td scope="row">{{ i.3 }}</td>
@@ -28,6 +28,25 @@
     {% endfor %}
     </tbody>
 </table>
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item {% if page.has_previous %}{% else %}disabled{% endif %}">
+      <a class="page-link" href="?page=1" tabindex="-1"><<</a>
+    </li>
+    <li class="page-item {% if page.has_previous %}{% else %}disabled{% endif %}">
+      <a class="page-link" href="?page={% if page.has_previous %}{{ page.previous_page_number }}{% endif %}" tabindex="-1">Poprzednia</a>
+    </li>
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1">Strona {{ page.number }}</a>
+    </li>
+    <li class="page-item {% if page.has_next %}{% else %}disabled{% endif %}">
+      <a class="page-link" href="?page={% if page.has_next %}{{ page.next_page_number }}{% endif %}">Następna</a>
+    </li>
+        <li class="page-item {% if page.has_next %}{% else %}disabled{% endif %}">
+      <a class="page-link" href="?page={{ page.paginator.num_pages }}" tabindex="-1">>></a>
+    </li>
+  </ul>
+</nav>
 </div>
 </body>
 </html>
