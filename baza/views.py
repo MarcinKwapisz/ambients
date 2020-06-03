@@ -183,9 +183,10 @@ def logout(request):
 def voteup(request):
     post = request.POST['id']
     user = request.user.id
-    if not models.Votes.objects.filter(ambient_id=post, user_id=user):
-        models.Votes.objects.create(ambient_id=post, user_id=user)
-        obj = models.Ambients.objects.get(id=post)
-        obj.glosy +=1
-        obj.save()
+    if request.user.is_authenticated:
+        if not models.Votes.objects.filter(ambient_id=post, user_id=user):
+            models.Votes.objects.create(ambient_id=post, user_id=user)
+            obj = models.Ambients.objects.get(id=post)
+            obj.glosy +=1
+            obj.save()
     return HttpResponse("Success")
