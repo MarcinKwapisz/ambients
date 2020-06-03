@@ -62,3 +62,13 @@ $(document).mouseup(function(e)
         container.remove();
     }
 });
+function voteup(id,token) {
+    console.log(token)
+    var request = new XMLHttpRequest();
+    request.open("POST", "/voteup", true);
+    request.setRequestHeader('X-CSRFToken', token);
+    var data = new FormData();
+    data.append('id', id)
+    request.send(data)
+    console.log(123)
+}
