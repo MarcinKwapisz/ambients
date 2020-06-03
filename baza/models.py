@@ -11,3 +11,7 @@ class Ambients(models.Model):
     kategorie = models.TextField()
     glosy = models.IntegerField()
     dodal = models.IntegerField()
+
+class Votes(models.Model):
+    ambient_id = models.IntegerField()
+    user_id = models.IntegerField()

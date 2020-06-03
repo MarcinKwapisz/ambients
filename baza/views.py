@@ -34,8 +34,8 @@ def getlink(link):
     name = soup.getSiteName
 
 def index(request):
-    form = models.Ambients.objects.values_list()
-    return render(request, 'index.html', {'form':form}, )
+    form = models.Ambients.objects.values_list().order_by('-glosy')
+    return render(request, 'index.html', {'form':form})
 
 @login_required
 def add(request):
@@ -170,3 +170,14 @@ def logout(request):
     else:
         messages.warning(request, "Nie jesteś zalogowany")
         return redirect('/')
+
+
+def voteup(request):
+    post = request.POST['id']
+    user = request.user.id
+    if not models.Votes.objects.filter(ambient_id=post, user_id=user):
+        models.Votes.objects.create(ambient_id=post, user_id=user)
+        obj = models.Ambients.objects.get(id=post)
+        obj.glosy +=1
+        obj.save()
+    return HttpResponse("Success")
