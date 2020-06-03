@@ -22,7 +22,7 @@
         <td scope="row">{{ i.3 }}</td>
         <td scope="row">{{ i.4 }}</td>
         <td scope="row"><a onclick='view("{{ i.1 }}")'><i class="fas fa-play"></i></a></td>
-        <td scope="row">{{ i.5 }}<br><a onclick="voteup({{ i.0 }},'{{ csrf_token }}')" class="vote"><i class="fas fa-thumbs-up"></i></a> </td>
+        <td scope="row"><span id="{{ i.0 }}">{{ i.5 }}</span><br><a onclick="voteup({{ i.0 }},'{{ csrf_token }}')" class="vote"><i class="fas fa-thumbs-up"></i></a> </td>
     </tr>
 
     {% endfor %}

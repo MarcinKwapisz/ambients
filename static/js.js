@@ -63,12 +63,12 @@ $(document).mouseup(function(e)
     }
 });
 function voteup(id,token) {
-    console.log(token)
     var request = new XMLHttpRequest();
     request.open("POST", "/voteup", true);
     request.setRequestHeader('X-CSRFToken', token);
     var data = new FormData();
-    data.append('id', id)
-    request.send(data)
-    console.log(123)
+    data.append('id', id);
+    request.send(data);
+    var val = document.getElementById(id);
+    val.textContent = parseInt(val.textContent)+1
 }
